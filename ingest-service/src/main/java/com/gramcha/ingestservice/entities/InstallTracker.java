@@ -13,7 +13,7 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 public class InstallTracker  extends JdkSerializationRedisSerializer implements Serializable{
 	
 	private static final long serialVersionUID = 2133669196786514847L;
-	private String advertisementId;
+	private long advertisementId;
 	private String deliveryId;
 	private String browser;
 	private String os;
@@ -40,12 +40,14 @@ public class InstallTracker  extends JdkSerializationRedisSerializer implements 
 	public void setSite(String site) {
 		this.site = site;
 	}
-	public String getAdvertisementId() {
+	public long getAdvertisementId() {
 		return advertisementId;
 	}
-	public void setAdvertisementId(String advertisementId) {
+
+	public void setAdvertisementId(long advertisementId) {
 		this.advertisementId = advertisementId;
 	}
+
 	public String getDeliveryId() {
 		return deliveryId;
 	}
