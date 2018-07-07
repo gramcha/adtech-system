@@ -41,4 +41,9 @@ public class AdDeliveryTrackerRepositoryImpl implements AdDeliveryTrackerReposit
 		return hashOperations.get(KEY, deliveryId);
 	}
 
+	@Override
+	public void delete(final String deliveryId) {
+		hashOperations.delete(KEY, deliveryId);
+	}
+
 }

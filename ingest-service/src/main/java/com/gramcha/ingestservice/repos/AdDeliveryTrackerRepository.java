@@ -11,4 +11,5 @@ import com.gramcha.ingestservice.models.AdDeliveryTrackerRequest;
 public interface AdDeliveryTrackerRepository {
 	void save(DeliveryTracker deliveryTracker);
 	DeliveryTracker findByDeliveryId(String deliveryId);
+	void delete(String deliveryId);
 }

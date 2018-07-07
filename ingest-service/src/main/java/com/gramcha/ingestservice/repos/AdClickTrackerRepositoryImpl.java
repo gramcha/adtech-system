@@ -39,5 +39,10 @@ public class AdClickTrackerRepositoryImpl implements AdClickTrackerRepository {
 	public ClickTracker findByClickId(String clickId) {
 		return hashOperations.get(KEY, clickId);
 	}
+	
+	@Override
+	public void delete(final String clickId) {
+        hashOperations.delete(KEY, clickId);
+    }
 
 }
