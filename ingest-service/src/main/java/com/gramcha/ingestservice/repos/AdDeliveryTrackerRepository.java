@@ -6,7 +6,6 @@
 package com.gramcha.ingestservice.repos;
 
 import com.gramcha.ingestservice.entities.DeliveryTracker;
-import com.gramcha.ingestservice.models.AdDeliveryTrackerRequest;
 
 public interface AdDeliveryTrackerRepository {
 	void save(DeliveryTracker deliveryTracker);

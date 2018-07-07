@@ -7,7 +7,6 @@ package com.gramcha.ingestservice.service;
 
 import com.gramcha.ingestservice.entities.ClickTracker;
 import com.gramcha.ingestservice.entities.DeliveryTracker;
-import com.gramcha.ingestservice.entities.InstallTracker;
 
 public interface CacheService {
 	void addDeliveryTrackerIntoCache(DeliveryTracker deliveryTracker);
@@ -18,7 +17,4 @@ public interface CacheService {
 
 	ClickTracker queryClickTrackerFromCache(String clickId);
 
-	void addInstallTrackerIntoCache(InstallTracker installTracker);
-
-	InstallTracker queryInstallFromCache(String installId);
 }
