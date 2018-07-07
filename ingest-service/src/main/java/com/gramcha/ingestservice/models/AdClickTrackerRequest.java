@@ -11,24 +11,29 @@ public class AdClickTrackerRequest {
 	private String deliveryId;
 	private String clickId;
 	private Date time;
-	
+
 	public String getDeliveryId() {
 		return deliveryId;
 	}
+
 	public void setDeliveryId(String deliveryId) {
 		this.deliveryId = deliveryId;
 	}
+
 	public String getClickId() {
 		return clickId;
 	}
+
 	public void setClickId(String clickId) {
 		this.clickId = clickId;
 	}
+
 	public Date getTime() {
 		return time;
 	}
+
 	public void setTime(Date time) {
 		this.time = time;
 	}
-	
+
 }
