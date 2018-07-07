@@ -8,18 +8,18 @@ package com.gramcha.ingestservice.models;
 import java.util.Date;
 
 public class AdDeliveryTrackerRequest {
-	private String advertisementId;
+	private long advertisementId;
 	private String deliveryId;
 	private Date time;
 	private String browser;
 	private String os;
 	private String site;
 
-	public String getAdvertisementId() {
+	public long getAdvertisementId() {
 		return advertisementId;
 	}
 
-	public void setAdvertisementId(String advertisementId) {
+	public void setAdvertisementId(long advertisementId) {
 		this.advertisementId = advertisementId;
 	}
 
