@@ -16,27 +16,28 @@ import com.gramcha.ingestservice.entities.InstallTracker;
 import com.gramcha.ingestservice.models.AdClickTrackerRequest;
 import com.gramcha.ingestservice.models.AdDeliveryTrackerRequest;
 import com.gramcha.ingestservice.models.AdInstallTrackerRequest;
-import com.gramcha.ingestservice.repos.AdDeliveryTrackerRepository;
 
 @Service
 public class TrackerIngestServiceImpl implements TrackerIngestService {
 	private final Logger LOG = LoggerFactory.getLogger(getClass());
+
 	@Autowired
-	AdDeliveryTrackerRepository deliveryTrackerRepo;
-	
+	private CacheService dbCache;
 	@Autowired
-	CacheService dbCache;
-	
+	private DataPipeLineService dataPipeline;
+
 	@Override
 	public boolean ingestDeliveryTracker(AdDeliveryTrackerRequest deliveryPayload) {
 		return checkAndStoreIntoCache(deliveryPayload);
 	}
+
 	boolean checkAndStoreIntoCache(AdDeliveryTrackerRequest deliveryPayload) {
 		DeliveryTracker deliveryTrackerEntity = fillDeliveryEnitity(deliveryPayload);
 		dbCache.addDeliveryTrackerIntoCache(deliveryTrackerEntity);
-		//TODO: push to kafa pipeline
+		dataPipeline.send(deliveryTrackerEntity);
 		return true;
 	}
+
 	private DeliveryTracker fillDeliveryEnitity(AdDeliveryTrackerRequest deliveryPayload) {
 		DeliveryTracker deliveryTrackerEntity = new DeliveryTracker();
 		deliveryTrackerEntity.setAdvertisementId(deliveryPayload.getAdvertisementId());
@@ -47,7 +48,7 @@ public class TrackerIngestServiceImpl implements TrackerIngestService {
 		deliveryTrackerEntity.setTime(deliveryPayload.getTime());
 		return deliveryTrackerEntity;
 	}
-	
+
 	@Override
 	public boolean ingestClickTracker(AdClickTrackerRequest clickPayload) {
 		return checkAndStoreIntoCache(clickPayload);
@@ -55,11 +56,10 @@ public class TrackerIngestServiceImpl implements TrackerIngestService {
 
 	private boolean checkAndStoreIntoCache(AdClickTrackerRequest clickPayload) {
 		DeliveryTracker deliveryTracker = getDeliveryTracker(clickPayload.getDeliveryId());
-		if(deliveryTracker!=null) {
+		if (deliveryTracker != null) {
 			ClickTracker clickTrackerEntity = fillClickTrackerEntity(clickPayload, deliveryTracker);
 			dbCache.addClickTrackerIntoCache(clickTrackerEntity);
-			
-			//TODO: push to kafa pipeline
+			dataPipeline.send(clickTrackerEntity);
 			return true;
 		} else {
 			LOG.info("Delivery Id " + clickPayload.getDeliveryId() + " is missing for given ClickTracker id "
@@ -67,6 +67,7 @@ public class TrackerIngestServiceImpl implements TrackerIngestService {
 			return false;
 		}
 	}
+
 	private ClickTracker fillClickTrackerEntity(AdClickTrackerRequest clickPayload, DeliveryTracker deliveryTracker) {
 		ClickTracker clickTrackerEntity = new ClickTracker();
 		clickTrackerEntity.setAdvertisementId(deliveryTracker.getAdvertisementId());
@@ -78,18 +79,19 @@ public class TrackerIngestServiceImpl implements TrackerIngestService {
 		clickTrackerEntity.setTime(clickPayload.getTime());
 		return clickTrackerEntity;
 	}
-	
+
 	private DeliveryTracker getDeliveryTracker(String deliveryId) {
 		return dbCache.queryDeliveryTrackerFromCache(deliveryId);
 	}
+
 	@Override
 	public boolean ingestInstallTracker(AdInstallTrackerRequest installPayload) {
 		return checkAndStoreIntoCache(installPayload);
 	}
-	
+
 	private boolean checkAndStoreIntoCache(AdInstallTrackerRequest installPayload) {
 		ClickTracker clickTracker = getClickTracker(installPayload.getClickId());
-		if(clickTracker!=null) {
+		if (clickTracker != null) {
 			InstallTracker installEntity = new InstallTracker();
 			installEntity.setAdvertisementId(clickTracker.getAdvertisementId());
 			installEntity.setBrowser(clickTracker.getBrowser());
@@ -99,14 +101,14 @@ public class TrackerIngestServiceImpl implements TrackerIngestService {
 			installEntity.setDeliveryId(clickTracker.getDeliveryId());
 			installEntity.setInstallId(installPayload.getInstallId());
 			installEntity.setTime(installPayload.getTime());
-			//TODO: push to kafa pipeline
+			dataPipeline.send(installEntity);
 			return true;
 		}
 		return false;
 	}
 
 	private ClickTracker getClickTracker(String clickId) {
-		ClickTracker result =  dbCache.queryClickTrackerFromCache(clickId);
+		ClickTracker result = dbCache.queryClickTrackerFromCache(clickId);
 		return result;
 	}
 }
