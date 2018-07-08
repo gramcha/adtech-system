@@ -1,0 +1,30 @@
+version: "3.5"
+
+#Docker host machine IP - copy below export command without # and execute before executing docker-compose command. or copy into bash_profile or bash.rc file.
+#export DOCKER_HOST_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
+
+services:
+  redis:
+    image: "redis:alpine"
+    #hostname: redis
+    ports:
+     - "6379:6379"
+    volumes:
+      - ./data/redis:/data 
+    #networks:
+    #  - my-network-name
+  ingest-service:
+    build: ./ingest-service
+    ports:
+     - "8080:8080"
+    depends_on:
+      - redis
+#    links:
+#      - redis:redis
+    #networks:
+    #  - my-network-name  
+    #environment:
+    #  SPRING_REDIS_HOST: $DOCKER_HOST_IP
+#networks:
+#  my-network-name:
+#   name: my-global-net    

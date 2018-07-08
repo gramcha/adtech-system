@@ -5,17 +5,24 @@
  */
 package com.gramcha.ingestservice.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 
 @Configuration
 public class RedisConfig {
+	@Autowired
+	private Environment env;
 	@Bean
     JedisConnectionFactory jedisConnectionFactory() {
-        return new JedisConnectionFactory();
+		JedisConnectionFactory factory =  new JedisConnectionFactory();
+		factory.setHostName(env.getProperty("spring.redis.host"));
+		factory.setPort(Integer.parseInt(env.getProperty("spring.redis.port")));
+        return factory;
     }
 
     @Bean
