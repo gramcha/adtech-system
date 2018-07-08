@@ -31,7 +31,7 @@ public class TrackerIngestServiceImpl implements TrackerIngestService {
 		return checkAndStoreIntoCache(deliveryPayload);
 	}
 
-	boolean checkAndStoreIntoCache(AdDeliveryTrackerRequest deliveryPayload) {
+	private boolean checkAndStoreIntoCache(AdDeliveryTrackerRequest deliveryPayload) {
 		DeliveryTracker deliveryTrackerEntity = fillDeliveryEnitity(deliveryPayload);
 		dbCache.addDeliveryTrackerIntoCache(deliveryTrackerEntity);
 		dataPipeline.send(deliveryTrackerEntity);
