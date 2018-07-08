@@ -17,6 +17,7 @@ import org.springframework.data.redis.serializer.GenericToStringSerializer;
 public class RedisConfig {
 	@Autowired
 	private Environment env;
+	@SuppressWarnings("deprecation")
 	@Bean
     JedisConnectionFactory jedisConnectionFactory() {
 		JedisConnectionFactory factory =  new JedisConnectionFactory();
