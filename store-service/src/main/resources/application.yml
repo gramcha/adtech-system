@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: store-service
+  data:
+    mongodb:
+      #add "127.0.0.1 mongo" without quote in /etc/hosts for running without docker when mongo running locally.
+      host: mongo
+      port: 27017
+  kafka:
+    #add "127.0.0.1 kafka" without quote in /etc/hosts for running without docker when kafka running locally.  
+    bootstrap-servers: kafka:9092
+    consumer:
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      group-id: storegroup
+      value-deserializer: com.gramcha.storeservice.CustomJsonDeserializer      
+    listener:
+      ack-mode: MANUAL
+server: 
+  port: 8181
