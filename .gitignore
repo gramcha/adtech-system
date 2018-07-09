@@ -23,4 +23,16 @@
 hs_err_pid*
 
 nohup.out
+#docker data folder
 data/redis/dump.rdb
+data/mongo-db/diagnostic.data
+*.bson
+*.wt
+*.lock
+
+
+data/mongo-data/WiredTiger
+
+data/mongo-data/diagnostic.data/
+
+data/mongo-data/journal/
