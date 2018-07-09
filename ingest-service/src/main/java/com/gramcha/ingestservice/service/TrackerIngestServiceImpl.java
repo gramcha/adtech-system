@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gramcha.ingestservice.entities.ClickTracker;
-import com.gramcha.ingestservice.entities.DeliveryTracker;
-import com.gramcha.ingestservice.entities.InstallTracker;
+import com.gramcha.entities.ClickTracker;
+import com.gramcha.entities.DeliveryTracker;
+import com.gramcha.entities.InstallTracker;
 import com.gramcha.ingestservice.models.AdClickTrackerRequest;
 import com.gramcha.ingestservice.models.AdDeliveryTrackerRequest;
 import com.gramcha.ingestservice.models.AdInstallTrackerRequest;

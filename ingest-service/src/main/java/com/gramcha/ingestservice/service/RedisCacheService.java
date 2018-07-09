@@ -8,8 +8,8 @@ package com.gramcha.ingestservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gramcha.ingestservice.entities.ClickTracker;
-import com.gramcha.ingestservice.entities.DeliveryTracker;
+import com.gramcha.entities.ClickTracker;
+import com.gramcha.entities.DeliveryTracker;
 import com.gramcha.ingestservice.repos.AdClickTrackerRepository;
 import com.gramcha.ingestservice.repos.AdDeliveryTrackerRepository;
 

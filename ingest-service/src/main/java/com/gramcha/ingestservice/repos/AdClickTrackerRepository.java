@@ -5,7 +5,7 @@
  */
 package com.gramcha.ingestservice.repos;
 
-import com.gramcha.ingestservice.entities.ClickTracker;
+import com.gramcha.entities.ClickTracker;
 
 public interface AdClickTrackerRepository {
 	void save(ClickTracker clickTracker);

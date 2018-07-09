@@ -3,7 +3,7 @@
  * 07-Jul-2018 4:41:49 PM
  * 
  */
-package com.gramcha.ingestservice.entities;
+package com.gramcha.entities;
 
 import java.io.Serializable;
 import java.util.Date;

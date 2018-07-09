@@ -5,8 +5,8 @@
  */
 package com.gramcha.ingestservice.service;
 
-import com.gramcha.ingestservice.entities.ClickTracker;
-import com.gramcha.ingestservice.entities.DeliveryTracker;
+import com.gramcha.entities.ClickTracker;
+import com.gramcha.entities.DeliveryTracker;
 
 public interface CacheService {
 	void addDeliveryTrackerIntoCache(DeliveryTracker deliveryTracker);

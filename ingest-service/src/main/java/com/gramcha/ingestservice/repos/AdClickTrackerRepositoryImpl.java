@@ -12,7 +12,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.gramcha.ingestservice.entities.ClickTracker;
+import com.gramcha.entities.ClickTracker;
 @Repository
 public class AdClickTrackerRepositoryImpl implements AdClickTrackerRepository {
 	private static final String KEY = "Click";

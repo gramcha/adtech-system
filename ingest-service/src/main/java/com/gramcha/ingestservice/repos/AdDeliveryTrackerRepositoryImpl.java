@@ -12,7 +12,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.gramcha.ingestservice.entities.DeliveryTracker;
+import com.gramcha.entities.DeliveryTracker;
 
 @Repository
 public class AdDeliveryTrackerRepositoryImpl implements AdDeliveryTrackerRepository {
