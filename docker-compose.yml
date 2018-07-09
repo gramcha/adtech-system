@@ -29,14 +29,27 @@ services:
      - "6379:6379"
     volumes:
       - ./data/redis:/data 
-    #networks:
-    #  - my-network-name
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/mongo-data:/data/db
+      - ./data/mongo-bkp:/data/bkp
+    restart: always
   ingest-service:
     build: ./ingest-service
     ports:
      - "8080:8080"
     depends_on:
       - redis
+      - kafka
+  store-service:
+    build: ./store-service
+    ports:
+     - "8181:8181"
+    depends_on:
+      - mongo
       - kafka
 #    links:
 #     - kafka
