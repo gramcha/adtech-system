@@ -51,13 +51,9 @@ services:
     depends_on:
       - mongo
       - kafka
-#    links:
-#     - kafka
-#      - redis:redis
-    #networks:
-    #  - my-network-name  
-    #environment:
-    #  SPRING_REDIS_HOST: $DOCKER_HOST_IP
-#networks:
-#  my-network-name:
-#   name: my-global-net    
+  query-service:
+    build: ./query-service
+    ports:
+     - "8282:8282"
+    depends_on:
+      - mongo
