@@ -14,9 +14,9 @@ class StatisticsController {
     private QueryServer queryServer;
 
     @RequestMapping(value = "/ads/statistics", method = RequestMethod.GET)
-    getStatistics(@RequestParam(required = true, value = "start") String start,
-                  @RequestParam(required = true, value = "end") String end,
-                  @RequestParam(required = false, value = "group_by") String[] groupBy){
+    getStatistics(@RequestParam(required = false, value = "start") String start,
+                  @RequestParam(required = false, value = "end") String end,
+                  @RequestParam(required = false, value = "group_by") String[] groupBy) {
         return  queryServer.getStatistics(start,end,groupBy);
     }
 
