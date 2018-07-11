@@ -43,12 +43,11 @@ class AdTrackerQueryService implements QueryServer {
     @Autowired
     GroupByQueryExecutorService groupByQueryExecutorService;
 
-    Object getStatistics(String start, String end, String[] groupBy) {
+    public Object getStatistics(String start, String end, String[] groupBy) {
         if(StringUtils.isEmpty(start) || StringUtils.isEmpty(end))
             return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
         start = start.split(" ")[0];
         end = end.split(" ")[0];
-
 
         if (groupBy == null || groupBy.length < 1) {
             //Statistics Type1 - Simple Statistics
