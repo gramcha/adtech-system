@@ -8,7 +8,8 @@ package com.gramcha.entities;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
-
+import org.springframework.data.mongodb.core.mapping.Document;
+@Document(collection = "click")
 public class ClickTracker {
 	@Id
 	private String id;
