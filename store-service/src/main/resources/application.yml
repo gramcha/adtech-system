@@ -16,5 +16,8 @@ spring:
       value-deserializer: com.gramcha.storeservice.CustomJsonDeserializer      
     listener:
       ack-mode: MANUAL
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 server: 
   port: 8181
