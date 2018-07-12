@@ -103,3 +103,28 @@ Response format:
         }
 
 
+### System Design
+To support the ingestion REST POST calls and statistics REST GET calls we need web services. Let's have two web services namely
+1. [Ingestion Service](https://github.com/gramcha/adtech-system/tree/master/ingest-service) - It provides endpoints for ad tracker POST calls - delivery, click, install
+2. [Query Service](https://github.com/gramcha/adtech-system/tree/master/query-service) - It provides endpoint for statistics query.
+
+In ingestion POST request, actual payload is having reference of previous request. For example: Click payload will have the delivery id of previous delivery request as reference id. We have to reject the click request if deliveryid of click request never received. Similarly install payload have the reference click request. 
+
+To handle this situation we need to keep track of previous requests. We can keep those requests in memory of ingestion service, or in some DB, or in some cache store.
+
+- In memory of ingestion service 
+    - It will be fast for reterival
+    - It will be overhead for the service and soon system might face out of memory situation.
+    - It will not work as expected if more than one ingestion services running in load balancer
+- In some DB
+    -  It can handle multiple ingestion services in load balancer environment.
+    -  Its reterival will be slow compare to other solutions.
+- In cache store
+    - The cache stores are perfect for this kind of requirement.
+    - Its reterival will be faster
+    - It can handle multiple ingestion services in load balancer environment.
+    - The cache store can be scaled out in distributed environment.
+
+The cache store seems to be better option than other two options. So we will have a cache store to store and reterival of the previous request details.
+
+3. [Redis cache](https://redis.io/) - The ingestion service will store and reterive the ad trackers.
