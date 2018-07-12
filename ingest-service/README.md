@@ -42,7 +42,7 @@ This service is structured like below directory tree.
 - src/main/java/com/gramcha is standard package strucutre.
     - entities - It contains the entity classes (schema) of delivery, click, and Install. These classes are represented Redis entities and same is used in the Kafka data schema.
     - ingestservice - It contains the spring boot application class and other sub packages given below.
-    - config - It provides RedisTemplate class bean and radish connection factory bean.
+    - config - It provides RedisTemplate class bean and Redis connection factory bean.
     - controller - It has RestController class which exposes the required endpoints.
     - exception - It has Hateoas based global exception controller of this web service. All the unhandled exceptions are handled here and the corresponding format response will be returned.
     - models - It has the DTO classes which will be received in exposed POST endpoints.
@@ -54,7 +54,7 @@ This service is structured like below directory tree.
             - When receiving install tracker, it will query cache service with given click id. if found the match it will create an Install Entity instance, which will have the delivery tracker, click tracker details too. Newly created install data is pushed into the data pipeline.
         -  Data Cache Service Layer - It has the interface and implementation of caching. Currently, Redis cache is underlying implementation and the same can be replaced with another implementation without affecting core service.
         -  Data Pipeline Service Layer - It has the interface and implementation of pushing data into the data pipeline. Currently, Kafka is the underlying implementation same can be replaced with another implementation without affecting core service.
-    - resources - It has the application.yml file which has the details about radios cache, Kafka producer, and server port details.
+    - resources - It has the application.yml file which has the details about Redis cache, Kafka producer, and server port details.
 - test/main/java/com/gramcha/ingestservice is standard package strucutre.
     - controller - It has test class which will test the AdTrackerController class with spring mockMVC.
     - repos - It has test classes to test the repository classes to validate the Redis Repos.
