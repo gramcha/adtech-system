@@ -116,7 +116,7 @@ Refer the [System Diagram](https://raw.githubusercontent.com/gramcha/adtech-syst
 
 To support the ingestion REST POST calls and statistics REST GET calls we need web services. Let's have two web services, namely Ingestion Service and Query Service.
 
-[Ingestion Service](https://github.com/gramcha/adtech-system/tree/master/ingest-service) - It provides endpoints for ad tracker POST calls - delivery, click, install. We **flatten the data** of click and install before we send it to further processing.  The payload data will be pushed into Kafka topics. For simplicity Kafka topics created with one partition and one replication. Modify the docker-compose.yml file changing these configs.
+[Ingestion Service](https://github.com/gramcha/adtech-system/tree/master/ingest-service) - It provides endpoints for ad tracker POST calls - delivery, click, install. We **flatten the data** of click and install before we send it to further processing.  The payload data will be pushed into Kafka topics. The Kafka topics created with 100 partitions to support horizontal scalability of consumer and one replication (since my machine has one broker). To ensure high availability of the topics we need at least 3 nodes and replication factor set to 2. Modify the docker-compose.yml file changing these configs.
 
 In the ingestion POST request, the actual payload is having a reference to previous requests. For example, click payload will have the delivery id of the previous delivery request as reference id. We have to reject the click request if delivery of click request never received. Similarly, install payload has the reference click request. 
 
