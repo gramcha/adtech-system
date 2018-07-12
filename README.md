@@ -101,30 +101,76 @@ Response format:
                 }
             ]
         }
-
-
+        
 ### System Design
-To support the ingestion REST POST calls and statistics REST GET calls we need web services. Let's have two web services namely
-1. [Ingestion Service](https://github.com/gramcha/adtech-system/tree/master/ingest-service) - It provides endpoints for ad tracker POST calls - delivery, click, install
-2. [Query Service](https://github.com/gramcha/adtech-system/tree/master/query-service) - It provides endpoint for statistics query.
+To support the ingestion REST POST calls and statistics REST GET calls we need web services. Let's have two web services, namely Ingestion Service and Query Service.
 
-In ingestion POST request, actual payload is having reference of previous request. For example: Click payload will have the delivery id of previous delivery request as reference id. We have to reject the click request if deliveryid of click request never received. Similarly install payload have the reference click request. 
+[Ingestion Service](https://github.com/gramcha/adtech-system/tree/master/ingest-service) - It provides endpoints for ad tracker POST calls - delivery, click, install. We flatten the data of click and install before we send it to further processing. 
 
-To handle this situation we need to keep track of previous requests. We can keep those requests in memory of ingestion service, or in some DB, or in some cache store.
+In the ingestion POST request, the actual payload is having a reference to previous requests. For example, click payload will have the delivery id of the previous delivery request as reference id. We have to reject the click request if delivery of click request never received. Similarly, install payload has the reference click request. 
 
-- In memory of ingestion service 
-    - It will be fast for reterival
+To handle this situation we need to keep track of previous requests. We can keep those requests in memory of ingestion service, or in SQL DB, or in some cache store.
+
+- In-memory of ingestion service 
+    - It will be faster for retrieval
     - It will be overhead for the service and soon system might face out of memory situation.
-    - It will not work as expected if more than one ingestion services running in load balancer
-- In some DB
-    -  It can handle multiple ingestion services in load balancer environment.
-    -  Its reterival will be slow compare to other solutions.
+    - It will not work as expected if more than one ingestion services running in a load balancer
+- In SQL
+    - It can handle multiple ingestion services in load balanced environment.
+    - Its retrieval will be slow compared to other solutions.
 - In cache store
     - The cache stores are perfect for this kind of requirement.
-    - Its reterival will be faster
-    - It can handle multiple ingestion services in load balancer environment.
-    - The cache store can be scaled out in distributed environment.
+    - Its retrieval will be faster
+    - It can handle multiple ingestion services in load balanced environment.
+    - The cache store can be scaled out in a distributed environment.
 
-The cache store seems to be better option than other two options. So we will have a cache store to store and reterival of the previous request details.
+The cache store seems to be a better option than other two options. So we will have a cache store to store and retrieval of the previous request details. 
 
-3. [Redis cache](https://redis.io/) - The ingestion service will store and reterive the ad trackers.
+Addition to caching layer, this service will flatten the data. For example the click payload will have the corresponding delivery payload info like OS, browser, site, etc., 
+
+Similarly, the install payload will have the click id and delivery payload info like OS, browser, site, etc., 
+
+[Redis cache](https://redis.io/) - The ingestion service will store and retrieve the ad trackers from redi cache.
+
+We need to store these three payloads into the data store for later retrieval. Storing logic can be part of ingestion service itself or it can be delegated to another service. The delegation can be implemented as an ingestion service post that payloads to another service. This is tightly coupled service architecture. In the future, we have to modify the ingestion service if another service wants that data. It will become an unwanted problem for ingestion service. 
+
+The better solution would be, ingestion service to push data into the data pipeline and let the other services integrate with the pipeline to consume the data.
+
+[Kafka Data Pipeline](http://kafka.apache.org/) - We need to create three topics to store the three payloads namely delivery, click, and install. Reason for having three different topics are
+    
+- There are possibilities where Click and Install tracker never received in ingestion service. We will not get those trackers if a user did not click and install.
+- three payloads might come in a different time interval
+
+[Store Service](https://github.com/gramcha/adtech-system/tree/master/store-service)- It is a kafka consumer which will consume data from those three topics and store it into the data store.
+
+We have two options for the Data Store where the data can be retrieved easily. The options are
+- SQL DB - 
+    - Structured Query Language - we need to define data schema upfront.
+    - It supports complex queries.
+    - It is matured and supported by many programming languages.
+    - It supports replication and sharding. For ex: MySQL
+    - It requires the DB administrator for managing it.
+- NoSQL DB
+    - It supports dynamic schema for unstructured data.
+    - Data is stored in many ways: it can be column-oriented, document-oriented, graph-based or organized as a KeyValue store.
+    - We can create documents without having to first define their structure. You can add fields as you go.
+    - It supports horizontal scalability, which helps reduce the workload and scale your business with ease.
+    - Easy to manage there is no need for DB administrator.
+
+**Considerations in choosing the DB**
+In our case, the payload might get change easily. For example, to track the regional ad deliveries country code and city name can be added into payload. In some cases we may not have these fields in tracker. To support this kind of flexibility we have modified the DB schema if we use SQL. In terms flexibility NoSQL is suitable for use. In terms of horizontal scalability NoSQL is better than SQL. So we will use NoSQL for storing the tracker payload.
+
+There are multiple choices for NoSQL DB includes MongoDB, BigTable, Redis, Cassandra, HBase, Neo4j, and CouchDB. For our requirement, MongoDB seems to a good choice for the following reasons
+- It is an Open-Source database which is Document-oriented.
+- MongoDB is a scalable and accessible database. 
+- The JavaScript can be utilized as the query language.
+- By utilizing sharding MongoDB scales horizontally.
+- MongoDB is the most well known among NoSQL Databases.
+
+[Mongodb](https://www.mongodb.com/) - The MongoDB will be used to store the data from the Kafka pipeline. It will be used by [Store Service](https://github.com/gramcha/adtech-system/tree/master/store-service) to store the data into three documents, namely, delivery, click, and install.
+
+[Query Service](https://github.com/gramcha/adtech-system/tree/master/query-service) - It provides an endpoint for statistics query. It will query the three different documents with group by aggregating and merge the result to generate the desired response object.
+
+### System Diagram
+
+    ![alt text](https://github.com/gramcha/adtech-system/blob/master/system-design-block-diagram.jpg)
