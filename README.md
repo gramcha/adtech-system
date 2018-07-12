@@ -169,7 +169,8 @@ We have two options for the Data Store where the data can be retrieved easily. T
     - Easy to manage there is no need for DB administrator.
 
 **Considerations in choosing the DB**
-In our case, the payload might get change easily. For example, to track the regional ad deliveries country code and city name can be added into payload. In some cases we may not have these fields in tracker. To support this kind of flexibility we have modified the DB schema if we use SQL. In terms flexibility NoSQL is suitable for use. In terms of horizontal scalability NoSQL is better than SQL. So we will use NoSQL for storing the tracker payload.
+
+In our case, the payload might get change easily. For example, to track the regional ad deliveries country code and city name can be added into the payload. In some cases, we may not have these fields in the tracker. To support this kind of flexibility we need to modify the DB schema if we use SQL. In terms, flexibility NoSQL is suitable for use. In terms of horizontal scalability, NoSQL is better than SQL. So we will use NoSQL for storing the tracker payload.
 
 There are multiple choices for NoSQL DB includes MongoDB, BigTable, Redis, Cassandra, HBase, Neo4j, and CouchDB. For our requirement, MongoDB seems to a good choice for the following reasons
 - It is an Open-Source database which is Document-oriented.
