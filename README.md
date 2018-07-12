@@ -103,7 +103,8 @@ Response format:
         }
         
 ### System Design
-We are having following services in this system.
+The system will have below services to fulfill the requirements
+
 1. Ingestion Service
 2. Redis cache
 3. Kafka Data Pipeline 
