@@ -114,7 +114,7 @@ Refer the [System Diagram](https://raw.githubusercontent.com/gramcha/adtech-syst
 
 To support the ingestion REST POST calls and statistics REST GET calls we need web services. Let's have two web services, namely Ingestion Service and Query Service.
 
-[Ingestion Service](https://github.com/gramcha/adtech-system/tree/master/ingest-service) - It provides endpoints for ad tracker POST calls - delivery, click, install. We flatten the data of click and install before we send it to further processing. 
+[Ingestion Service](https://github.com/gramcha/adtech-system/tree/master/ingest-service) - It provides endpoints for ad tracker POST calls - delivery, click, install. We **flatten the data** of click and install before we send it to further processing.  The payload data will be pushed into Kafka topics. For simplicity Kafka topics created with one partition and one replication. Modify the docker-compose.yml file changing these configs.
 
 In the ingestion POST request, the actual payload is having a reference to previous requests. For example, click payload will have the delivery id of the previous delivery request as reference id. We have to reject the click request if delivery of click request never received. Similarly, install payload has the reference click request. 
 
@@ -135,7 +135,7 @@ To handle this situation we need to keep track of previous requests. We can keep
 
 The cache store seems to be a better option than other two options. So we will have a cache store to store and retrieval of the previous request details. 
 
-Addition to caching layer, this service will flatten the data. For example the click payload will have the corresponding delivery payload info like OS, browser, site, etc., 
+Addition to caching layer, this service will **flatten the data**. For example the click payload will have the corresponding delivery payload info like OS, browser, site, etc., 
 
 Similarly, the install payload will have the click id and delivery payload info like OS, browser, site, etc., 
 
@@ -145,12 +145,12 @@ We need to store these three payloads into the data store for later retrieval. S
 
 The better solution would be, ingestion service to push data into the data pipeline and let the other services integrate with the pipeline to consume the data.
 
-[Kafka Data Pipeline](http://kafka.apache.org/) - We need to create three topics to store the three payloads namely delivery, click, and install. Reason for having three different topics are
+[Kafka Data Pipeline](http://kafka.apache.org/) - We need to create three topics to store the three payloads namely delivery, click, and install.Reason for having three different topics are
     
 - There are possibilities where Click and Install tracker never received in ingestion service. We will not get those trackers if a user did not click and install.
 - three payloads might come in a different time interval
 
-[Store Service](https://github.com/gramcha/adtech-system/tree/master/store-service)- It is a kafka consumer which will consume data from those three topics and store it into the data store.
+[Store Service](https://github.com/gramcha/adtech-system/tree/master/store-service)- It is a kafka consumer which will consume data from those three topics and store it into the data store. Kafka consumer configured with **auto-commit:false** and store service will commit once it is written into DB.
 
 We have two options for the Data Store where the data can be retrieved easily. The options are
 - SQL DB - 
@@ -187,7 +187,7 @@ There are multiple choices for NoSQL DB includes MongoDB, BigTable, Redis, Cassa
 All the services can be executed using docker compose. Use below steps for deploying it in docker
 
 1. Setup **DOCKER_HOST_IP** as environment variable in order to communicate between docker containers.
-    - copy and execute command from **setup_docker_hostip.txt** file. I could not put the commend directly in Readme.md since command uses backtick and that is rendered differently in Readme.md screen.
+    - copy and execute command from **setup_docker_hostip.txt**. I could not put the commend directly in Readme.md since command uses backtick and that is rendered differently in Readme.md screen.
     - verify the docker host ip by executing **echo $DOCKER_HOST_IP**. It should return your ip address.
 2. Create executable jars for ingestion, store and query services.
     - execute below command
@@ -206,6 +206,6 @@ All the services can be executed using docker compose. Use below steps for deplo
     -  http://localhost:8282/ads/statistics?start=2017-01-07T14:30:00+0000&end=2019-02-07T18:20:00+0000
     -  http://localhost:8282/ads/statistics?start=2017-01-07T14:30:00+0000&end=2019-02-07T18:20:00+0000&group_by=browser&group_by=os&group_by=site
 
-Rest of the services like redis, mongo, kafka and zookeeper are running and exposing their default port. Please refer **docker-compose.yml** for more details.
+Rest of the services like redis, mongo, kafka and zookeeper are running and exposing their default port. Please refer **docker-compose.yml** file for more details.
 
 **Please make sure that data folder in project root directory is added into docker file sharing list of directories. Otherwise Redis and mongo might throw errors.**
