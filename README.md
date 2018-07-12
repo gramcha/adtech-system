@@ -105,12 +105,12 @@ Response format:
 ### System Design
 The system will have below services to fulfill the requirements
 
-1. Ingestion Service
+1. [Ingestion Service](https://github.com/gramcha/adtech-system/tree/master/ingest-service)
 2. Redis cache
 3. Kafka Data Pipeline 
-4. Store service
+4. [Store Service](https://github.com/gramcha/adtech-system/tree/master/store-service)
 5. Mongodb
-6. Query Service 
+6. [Query Service](https://github.com/gramcha/adtech-system/tree/master/query-service) 
 
 Refer the [System Diagram](https://raw.githubusercontent.com/gramcha/adtech-system/master/system-design-block-diagram.png)
 
@@ -152,7 +152,7 @@ The better solution would be, ingestion service to push data into the data pipel
 - There are possibilities where Click and Install tracker never received in ingestion service. We will not get those trackers if a user did not click and install.
 - three payloads might come in a different time interval
 
-[Store Service](https://github.com/gramcha/adtech-system/tree/master/store-service)- It is a kafka consumer which will consume data from those three topics and store it into the data store. Kafka consumer configured with **auto-commit:false** and store service will commit once it is written into DB.
+[Store Service](https://github.com/gramcha/adtech-system/tree/master/store-service) - It is a kafka consumer which will consume data from those three topics and store it into the data store. Kafka consumer configured with **auto-commit:false** and store service will commit once it is written into DB.
 
 We have two options for the Data Store where the data can be retrieved easily. The options are
 - SQL DB - 
