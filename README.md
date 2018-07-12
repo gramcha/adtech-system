@@ -171,6 +171,18 @@ There are multiple choices for NoSQL DB includes MongoDB, BigTable, Redis, Cassa
 
 [Query Service](https://github.com/gramcha/adtech-system/tree/master/query-service) - It provides an endpoint for statistics query. It will query the three different documents with group by aggregating and merge the result to generate the desired response object.
 
-### System Diagram
+Refer the [System Diagram](https://raw.githubusercontent.com/gramcha/adtech-system/master/system-design-block-diagram.png)
 
-![alt text](https://github.com/gramcha/adtech-system/blob/master/system-design-block-diagram.png)
+### Docker deployment
+
+All the services can be executed using docker compose. Use below steps for deploying it in docker
+
+1. Setup **DOCKER_HOST_IP** as environment variable in order to communicate between docker containers.
+    - execute below command
+    **export DOCKER_HOST_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`**
+    - verify the docker host ip by executing **echo $DOCKER_HOST_IP**
+2. Create executable jars for ingestion, store and query services.
+    - execute below command
+    **sh maven_build.sh**
+3. Execute docker compose command run the containers
+    **docker-compose up --build -d**
