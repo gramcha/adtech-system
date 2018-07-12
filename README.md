@@ -171,6 +171,6 @@ There are multiple choices for NoSQL DB includes MongoDB, BigTable, Redis, Cassa
 
 [Query Service](https://github.com/gramcha/adtech-system/tree/master/query-service) - It provides an endpoint for statistics query. It will query the three different documents with group by aggregating and merge the result to generate the desired response object.
 
-### System Diagram
+### [System Diagram](https://raw.githubusercontent.com/gramcha/adtech-system/master/system-design-block-diagram.png)
 
-![alt text](https://github.com/gramcha/adtech-system/master/system-design-block-diagram.png)
+
