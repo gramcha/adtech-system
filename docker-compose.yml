@@ -21,7 +21,7 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: $DOCKER_HOST_IP
       KAFKA_ADVERTISED_PORT: 9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "delivery:1:1,click:1:1,install:1:1"
+      KAFKA_CREATE_TOPICS: "delivery:100:1,click:100:1,install:100:1"
   redis:
     image: "redis:alpine"
     #hostname: redis
