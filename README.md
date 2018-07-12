@@ -1,5 +1,5 @@
 # adtech-system
-A simple implementation of a simple AdTech web service that tracks the ads that are being delivered through their lifecycle and generates some simple statistics.
+A simple implementation of an AdTech web service that tracks the ads that are being delivered through their lifecycle and generates some simple statistics.
 
 The web service’s endpoints and request / response formats are described below.
 
@@ -141,7 +141,7 @@ Addition to caching layer, this service will **flatten the data**. For example t
 
 Similarly, the install payload will have the click id and delivery payload info like OS, browser, site, etc., 
 
-[Redis cache](https://redis.io/) - The ingestion service will store and retrieve the ad trackers from redi cache.
+[Redis cache](https://redis.io/) - The ingestion service will store and retrieve the ad trackers from Redis cache.
 
 We need to store these three payloads into the data store for later retrieval. Storing logic can be part of ingestion service itself or it can be delegated to another service. The delegation can be implemented as an ingestion service post that payloads to another service. This is tightly coupled service architecture. In the future, we have to modify the ingestion service if another service wants that data. It will become an unwanted problem for ingestion service. 
 
@@ -190,13 +190,17 @@ All the services can be executed using docker compose. Use below steps for deplo
 
 1. Setup **DOCKER_HOST_IP** as environment variable in order to communicate between docker containers.
     - copy and execute command from **setup_docker_hostip.txt**. I could not put the commend directly in Readme.md since command uses backtick and that is rendered differently in Readme.md screen.
+    ```sh
+    export DOCKER_HOST_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
+    ```
     - verify the docker host ip by executing **echo $DOCKER_HOST_IP**. It should return your ip address.
 2. Create executable jars for ingestion, store and query services.
     - execute below command
     
         sh maven_build.sh
 
-3. Execute docker compose command run the containers
+3. Execute below docker compose command to run the containers
+
     **docker-compose up --build -d**
 
 ### API endpoints
