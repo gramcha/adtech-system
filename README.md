@@ -189,19 +189,25 @@ There are multiple choices for NoSQL DB includes MongoDB, BigTable, Redis, Cassa
 All the services can be executed using docker compose. Use below steps for deploying it in docker
 
 1. Setup **DOCKER_HOST_IP** as environment variable in order to communicate between docker containers.
-    - copy and execute command from **setup_docker_hostip.txt**. I could not put the commend directly in Readme.md since command uses backtick and that is rendered differently in Readme.md screen.
+    - execute below command
     ```sh
     export DOCKER_HOST_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
     ```
-    - verify the docker host ip by executing **echo $DOCKER_HOST_IP**. It should return your ip address.
+    - verify the docker host ip by executing below command. It should return your ip address.
+    ```sh
+    echo $DOCKER_HOST_IP
+    ```
+    
 2. Create executable jars for ingestion, store and query services.
     - execute below command
-    
+    ```sh
         sh maven_build.sh
-
+    ```
+    
 3. Execute below docker compose command to run the containers
-
-    **docker-compose up --build -d**
+    ```sh
+        docker-compose up --build -d
+    ```
 
 ### API endpoints
 - ingestion service - **port 8080**
