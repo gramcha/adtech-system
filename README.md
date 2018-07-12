@@ -103,6 +103,15 @@ Response format:
         }
         
 ### System Design
+We are having following services in this system.
+1. Ingestion Service
+2. Redis cache
+3. Kafka Data Pipeline 
+4. Mongodb
+5. Query Service 
+
+Refer the [System Diagram](https://raw.githubusercontent.com/gramcha/adtech-system/master/system-design-block-diagram.png)
+
 To support the ingestion REST POST calls and statistics REST GET calls we need web services. Let's have two web services, namely Ingestion Service and Query Service.
 
 [Ingestion Service](https://github.com/gramcha/adtech-system/tree/master/ingest-service) - It provides endpoints for ad tracker POST calls - delivery, click, install. We flatten the data of click and install before we send it to further processing. 
@@ -171,7 +180,7 @@ There are multiple choices for NoSQL DB includes MongoDB, BigTable, Redis, Cassa
 
 [Query Service](https://github.com/gramcha/adtech-system/tree/master/query-service) - It provides an endpoint for statistics query. It will query the three different documents with group by aggregating and merge the result to generate the desired response object.
 
-Refer the [System Diagram](https://raw.githubusercontent.com/gramcha/adtech-system/master/system-design-block-diagram.png)
+
 
 ### Docker deployment
 
@@ -179,10 +188,21 @@ All the services can be executed using docker compose. Use below steps for deplo
 
 1. Setup **DOCKER_HOST_IP** as environment variable in order to communicate between docker containers.
     - execute below command
-    **export DOCKER_HOST_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`**
+
+        sh setup_docker_hostip.sh
+        
     - verify the docker host ip by executing **echo $DOCKER_HOST_IP**
 2. Create executable jars for ingestion, store and query services.
     - execute below command
-    **sh maven_build.sh**
+    
+        sh maven_build.sh
+
 3. Execute docker compose command run the containers
     **docker-compose up --build -d**
+
+### Port Details
+- ingestion service - localhost:**8080**
+- store service - localhost:**8181**
+- query service - localhost:**8282**
+
+Rest of the services like redis, mongo, kafka and zookeeper are running and exposing their default port. Please refer **docker-compose.yml** for more details.
