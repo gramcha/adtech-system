@@ -187,11 +187,8 @@ There are multiple choices for NoSQL DB includes MongoDB, BigTable, Redis, Cassa
 All the services can be executed using docker compose. Use below steps for deploying it in docker
 
 1. Setup **DOCKER_HOST_IP** as environment variable in order to communicate between docker containers.
-    - execute below command
-
-        sh setup_docker_hostip.sh
-        
-    - verify the docker host ip by executing **echo $DOCKER_HOST_IP**
+    - copy and execute command from **setup_docker_hostip.txt** file. I could not put the commend directly in Readme.md since command uses backtick and that is rendered differently in Readme.md screen.
+    - verify the docker host ip by executing **echo $DOCKER_HOST_IP**. It should return your ip address.
 2. Create executable jars for ingestion, store and query services.
     - execute below command
     
@@ -200,9 +197,15 @@ All the services can be executed using docker compose. Use below steps for deplo
 3. Execute docker compose command run the containers
     **docker-compose up --build -d**
 
-### Port Details
-- ingestion service - localhost:**8080**
-- store service - localhost:**8181**
-- query service - localhost:**8282**
+### API endpoints
+- ingestion service - **port 8080**
+    - http://localhost:8080/ads/delivery
+    - http://localhost:8080/ads/click
+    - http://localhost:8080/ads/install
+- query service - **port 8282**
+    -  http://localhost:8282/ads/statistics?start=2017-01-07T14:30:00+0000&end=2019-02-07T18:20:00+0000
+    -  http://localhost:8282/ads/statistics?start=2017-01-07T14:30:00+0000&end=2019-02-07T18:20:00+0000&group_by=browser&group_by=os&group_by=site
 
 Rest of the services like redis, mongo, kafka and zookeeper are running and exposing their default port. Please refer **docker-compose.yml** for more details.
+
+**Please make sure that data folder in project root directory is added into docker file sharing list of directories. Otherwise Redis and mongo might throw errors.**
