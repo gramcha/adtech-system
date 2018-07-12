@@ -3,7 +3,7 @@ A simple implementation of a web service that queries the Ad trackers from Data 
 
 ### Tech Stack
 The Technical Stack used for this service is,
-- Language - JAVA
+- Language - JAVA mixed with Groovy
 - Spring Boot Web Application
 - MongoDb - Spring Data Mongo
 - Global Exception Handler - Spring Boot Hateoas
