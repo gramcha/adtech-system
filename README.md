@@ -173,4 +173,4 @@ There are multiple choices for NoSQL DB includes MongoDB, BigTable, Redis, Cassa
 
 ### System Diagram
 
-![alt text](https://github.com/gramcha/adtech-system/blob/master/system-design-block-diagram.png)
+![alt text](https://github.com/gramcha/adtech-system/master/system-design-block-diagram.png)
