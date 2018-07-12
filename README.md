@@ -108,8 +108,9 @@ The system will have below services to fulfill the requirements
 1. Ingestion Service
 2. Redis cache
 3. Kafka Data Pipeline 
-4. Mongodb
-5. Query Service 
+4. Store service
+5. Mongodb
+6. Query Service 
 
 Refer the [System Diagram](https://raw.githubusercontent.com/gramcha/adtech-system/master/system-design-block-diagram.png)
 
