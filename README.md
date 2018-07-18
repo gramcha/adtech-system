@@ -210,6 +210,14 @@ All the services can be executed using docker compose. Use below steps for deplo
         docker-compose up --build -d
     ```
 
+### Swagger API Support
+Swagger API support added. Please hit below endpoints in browser
+- ingestion service - **port 8080**
+    - http://localhost:8080/swagger-ui.html
+- query service - **port 8282**
+    -  http://localhost:8282/swagger-ui.html
+
+
 ### API endpoints
 - ingestion service - **port 8080**
     - http://localhost:8080/ads/delivery

@@ -112,6 +112,11 @@ Response format:
         }
         
 
+### Swagger API Support
+Swagger API support added. Please hit below endpoints in browser
+     -  http://localhost:8282/swagger-ui.html
+
+
 ### API endpoints if you are running locally
      -  http://localhost:8282/ads/statistics?start=2017-01-07T14:30:00+0000&end=2019-02-07T18:20:00+0000
      -  http://localhost:8282/ads/statistics?start=2017-01-07T14:30:00+0000&end=2019-02-07T18:20:00+0000&group_by=browser&group_by=os&group_by=site

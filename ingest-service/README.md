@@ -106,6 +106,11 @@ Response format:
 - HTTP response code 200 if everything went fine
 - HTTP response code 404 if we never received the given click HTTP response 500 if something went wrong
 
+### Swagger API Support
+Swagger API support added. Please hit below endpoints in browser
+    - http://localhost:8080/swagger-ui.html
+
+
 ### API endpoints if you are running locally
     - http://localhost:8080/ads/delivery
     - http://localhost:8080/ads/click
