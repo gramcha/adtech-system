@@ -103,6 +103,8 @@ Response format:
         }
         
 ### System Design
+![alt text](https://github.com/gramcha/adtech-system/blob/master/system-design-block-diagram.jpg)
+
 The system will have below services to fulfill the requirements
 
 1. [Ingestion Service](https://github.com/gramcha/adtech-system/tree/master/ingest-service)
