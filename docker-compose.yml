@@ -6,13 +6,13 @@ version: "3.5"
 services:
   zookeeper:
     hostname: zookeeper
-    image: wurstmeister/zookeeper:3.4.6
+    image: wurstmeister/zookeeper:latest
     ports:
       - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
-    image: wurstmeister/kafka:1.0.0
+    image: wurstmeister/kafka:latest
     links:
      - zookeeper
     ports:
@@ -23,27 +23,39 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: "delivery:100:1,click:100:1,install:100:1"
   redis:
-    image: "redis:alpine"
-    #hostname: redis
+    image: redis
+    hostname: redis
     ports:
-     - "6379:6379"
+      - "6379:6379"
     volumes:
-      - ./data/redis:/data 
+      - /Users/gramcha/source/docker/data/redis:/data
   mongo:
-    image: mongo
+    image: mongo:3.6.1
+    container_name: mongo
+    volumes:
+      - /Users/gramcha/source/docker/data/mongodb:/data/db
+      - /Users/gramcha/source/docker/config:/data/configdb
     ports:
       - 27017:27017
-    volumes:
-      - ./data/mongo-data:/data/db
-      - ./data/mongo-bkp:/data/bkp
-    restart: always
+    command: mongod
   ingest-service:
     build: ./ingest-service
     ports:
-     - "8080:8080"
+#     - "8080:8080" # if running with out haproxy then enable this.
+     - 8080
     depends_on:
       - redis
       - kafka
+# loadbalance ingest-service
+# scale up ingest service using command 'docker-compose scale ingest-service=2'
+  lb:
+    image: dockercloud/haproxy
+    links:
+      - ingest-service
+    ports:
+      - '80:80'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   store-service:
     build: ./store-service
     ports:
