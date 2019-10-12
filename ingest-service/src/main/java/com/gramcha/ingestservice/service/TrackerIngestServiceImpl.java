@@ -62,7 +62,7 @@ public class TrackerIngestServiceImpl implements TrackerIngestService {
 			dataPipeline.send(clickTrackerEntity);
 			return true;
 		} else {
-			LOG.info("Delivery Id " + clickPayload.getDeliveryId() + " is missing for given ClickTracker id "
+			LOG.error("Delivery Id " + clickPayload.getDeliveryId() + " is missing for given ClickTracker id "
 					+ clickPayload.getClickId());
 			return false;
 		}
@@ -103,8 +103,11 @@ public class TrackerIngestServiceImpl implements TrackerIngestService {
 			installEntity.setTime(installPayload.getTime());
 			dataPipeline.send(installEntity);
 			return true;
+		}else {
+			LOG.error("Click Id " + installPayload.getClickId() + " is missing for given InstallTracker id "
+					+ installPayload.getInstallId());
+			return false;
 		}
-		return false;
 	}
 
 	private ClickTracker getClickTracker(String clickId) {
